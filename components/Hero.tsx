@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=2070&auto=format&fit=crop";
+const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop";
 const AGENCY_SLOGAN = "Respirez, vous passez par Laforêt Saint-Avertin.";
 
 interface HeroProps {
@@ -10,7 +10,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ onGetEstimationClick }) => {
   return (
     <section 
-      className="relative bg-cover bg-center text-white py-20 md:py-28"
+      className="relative bg-cover bg-center text-white py-16 md:py-24"
       style={{ backgroundImage: `url(${HERO_IMAGE_URL})` }}
     >
       <div className="absolute inset-0 bg-black opacity-40"></div>
@@ -23,7 +23,7 @@ const Hero: React.FC<HeroProps> = ({ onGetEstimationClick }) => {
         </p>
         <button
           onClick={onGetEstimationClick}
-          className="bg-laforet-accent text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl"
+          className="bg-laforet-accent text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl"
         >
           Obtenir mon estimation en 2 minutes
         </button>
