@@ -28,6 +28,16 @@ const EstimationForm: React.FC<EstimationFormProps> = ({ onSubmit }) => {
     gdprConsent: false,
     condition: 'Bon état',
     featuresQuality: 'Standard',
+    vis_a_vis: 'non',
+    vue_quality: 'dégagée',
+    exposition: 'Sud',
+    luminosite: 'normale',
+    nuisances_sonores: 'aucune',
+    proximite_axes: 'non',
+    travaux_niveau: 'aucun',
+    exterieur_qualite: 'correct',
+    vis_a_vis_jardin: 'aucun',
+    stationnement_type: 'parking',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -59,9 +69,9 @@ const EstimationForm: React.FC<EstimationFormProps> = ({ onSubmit }) => {
   return (
     <div className="max-w-3xl mx-auto p-8 bg-white shadow-2xl rounded-lg border border-gray-100">
       <h2 className="text-3xl font-bold text-center text-laforet-primary mb-2">Estimez votre bien gratuitement</h2>
-      <p className="text-center text-gray-600 mb-8">Obtenez une première fourchette de prix en 3 étapes simples.</p>
+      <p className="text-center text-gray-600 mb-8">Obtenez une première fourchette de prix en quelques étapes.</p>
       
-      <ProgressBar currentStep={step} totalSteps={3} />
+      <ProgressBar currentStep={step} totalSteps={4} />
       
       <form onSubmit={handleSubmit}>
         {step === 1 && (
@@ -111,8 +121,7 @@ const EstimationForm: React.FC<EstimationFormProps> = ({ onSubmit }) => {
                 <div><label className="block text-sm font-medium text-gray-700 mb-1">Nombre de chambres</label><input type="number" name="bedrooms" value={formData.bedrooms || ''} onChange={handleChange} required className="w-full p-2 border border-gray-300 rounded-md" /></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-1">Année de construction</label><input type="number" name="buildYear" value={formData.buildYear || ''} onChange={handleChange} required className="w-full p-2 border border-gray-300 rounded-md" /></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-1">État général</label><select name="condition" value={formData.condition} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>À rénover</option><option>Travaux à prévoir</option><option>Bon état</option><option>Très bon état</option><option>Neuf</option></select></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Qualité des prestations</label><select name="featuresQuality" value={formData.featuresQuality} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>Standard</option><option>De qualité</option><option>Haut de gamme / Luxe</option></select></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Stationnement</label><select name="parking" value={formData.parking} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>Aucun</option><option>Garage</option><option>Parking extérieur</option><option>Box</option></select></div>
+                <div className="md:col-span-2"><label className="block text-sm font-medium text-gray-700 mb-1">Qualité des prestations</label><select name="featuresQuality" value={formData.featuresQuality} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>Standard</option><option>De qualité</option><option>Haut de gamme / Luxe</option></select></div>
             </div>
             <div className="flex justify-between">
               <button type="button" onClick={prevStep} className="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-md hover:bg-gray-300 transition-colors">Précédent</button>
@@ -122,8 +131,33 @@ const EstimationForm: React.FC<EstimationFormProps> = ({ onSubmit }) => {
         )}
 
         {step === 3 && (
+            <div className="space-y-6 animate-fade-in">
+                <h3 className="text-xl font-semibold text-gray-700">3. Affiner l'estimation</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    {/* Column 1 */}
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Vis-à-vis direct</label><select name="vis_a_vis" value={formData.vis_a_vis} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>non</option><option>faible</option><option>fort</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Qualité de la vue</label><select name="vue_quality" value={formData.vue_quality} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>dégagée</option><option>partiellement dégagée</option><option>vis-à-vis important</option><option>vue exceptionnelle</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Exposition principale</label><select name="exposition" value={formData.exposition} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>Sud</option><option>Ouest</option><option>Est</option><option>Nord</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Luminosité</label><select name="luminosite" value={formData.luminosite} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>très lumineuse</option><option>normale</option><option>faible</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Nuisances sonores</label><select name="nuisances_sonores" value={formData.nuisances_sonores} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>aucune</option><option>faibles</option><option>régulières</option><option>importantes</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Proximité d'axes passants</label><select name="proximite_axes" value={formData.proximite_axes} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>non</option><option>oui</option></select></div>
+                     {/* Column 2 */}
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Travaux à prévoir</label><select name="travaux_niveau" value={formData.travaux_niveau} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>aucun</option><option>légers</option><option>moyens</option><option>importants</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Qualité de l'extérieur</label><select name="exterieur_qualite" value={formData.exterieur_qualite} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>pas d’extérieur</option><option>petit</option><option>correct</option><option>grand</option><option>très qualitatif</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Vis-à-vis dans le jardin</label><select name="vis_a_vis_jardin" value={formData.vis_a_vis_jardin} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>aucun</option><option>faible</option><option>fort</option></select></div>
+                    <div><label className="block text-sm font-medium text-gray-700 mb-1">Stationnement</label><select name="stationnement_type" value={formData.stationnement_type} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md"><option>aucun</option><option>parking</option><option>garage</option><option>parking + garage</option></select></div>
+                    <div className="md:col-span-2"><label className="block text-sm font-medium text-gray-700 mb-1">Si travaux, précisez (facultatif)</label><input type="text" name="travaux_details" value={formData.travaux_details || ''} onChange={handleChange} className="w-full p-2 border border-gray-300 rounded-md" /></div>
+                </div>
+                <div className="flex justify-between">
+                    <button type="button" onClick={prevStep} className="bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-md hover:bg-gray-300 transition-colors">Précédent</button>
+                    <button type="button" onClick={nextStep} className="bg-laforet-primary text-white font-bold py-2 px-6 rounded-md hover:bg-opacity-90 transition-colors">Suivant</button>
+                </div>
+            </div>
+        )}
+
+        {step === 4 && (
           <div className="space-y-6 animate-fade-in">
-             <h3 className="text-xl font-semibold text-gray-700">3. Vos coordonnées</h3>
+             <h3 className="text-xl font-semibold text-gray-700">4. Vos coordonnées</h3>
              <p className="text-sm text-gray-500">Nous ne partagerons jamais vos informations. Elles nous permettent de vous envoyer votre estimation personnalisée.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label><input type="text" name="firstName" value={formData.firstName || ''} onChange={handleChange} required className="w-full p-2 border border-gray-300 rounded-md" /></div>

@@ -41,7 +41,14 @@ export default function App() {
     setCurrentLoadingStep(0);
 
     const interval = setInterval(() => {
-      setCurrentLoadingStep(prev => (prev + 1) % loadingSteps.length);
+      setCurrentLoadingStep(prev => {
+        // Only advance if there are more steps to show.
+        if (prev < loadingSteps.length - 1) {
+          return prev + 1;
+        }
+        // Otherwise, stay on the last step until the API call finishes.
+        return prev;
+      });
     }, 1500);
 
     try {
@@ -75,7 +82,7 @@ export default function App() {
                 <div className="text-center max-w-2xl mx-auto">
                     <h2 className="text-3xl font-bold text-laforet-primary mb-6">Nous préparons votre estimation...</h2>
                     <div className="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
-                        <div className="bg-laforet-accent h-4 rounded-full animate-pulse" style={{ width: `${(currentLoadingStep + 1) / loadingSteps.length * 100}%` }}></div>
+                        <div className="bg-laforet-accent h-4 rounded-full transition-all duration-500" style={{ width: `${(currentLoadingStep + 1) / loadingSteps.length * 100}%` }}></div>
                     </div>
                     <p className="text-lg text-gray-600 transition-opacity duration-500">{loadingSteps[currentLoadingStep]}</p>
                 </div>
