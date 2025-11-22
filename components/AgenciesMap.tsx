@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { loadGoogleMapsScript } from '../services/mapsLoader';
 
+// FIX: Use `process.env` to access environment variables provided by the execution environment.
 const GOOGLE_MAPS_API_KEY = process.env.VITE_GOOGLE_MAPS_API_KEY;
 const CITY_NAME = "Saint-Avertin";
 const SERVED_AREAS = ["Saint-Avertin", "Chambray-lès-Tours", "Tours-Sud", "Larçay", "Veigné", "Esvres-sur-Indre"];

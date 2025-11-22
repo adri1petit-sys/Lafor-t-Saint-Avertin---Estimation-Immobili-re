@@ -28,11 +28,11 @@ Now, open `.env.local` and add your API keys:
 
 ```
 # Get your Gemini API key from Google AI Studio
-VITE_GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+VITE_GEMINI_API_KEY="AIzaSyCJQM0dHNALXTJW0jN--ogwz_OqOzT9fZU"
 
 # Get your Google Maps API key from Google Cloud Console
 # Make sure to enable "Places API" and "Maps JavaScript API"
-VITE_GOOGLE_MAPS_API_KEY="YOUR_GOOGLE_MAPS_API_KEY_HERE"
+VITE_GOOGLE_MAPS_API_KEY="AIzaSyDhX0aZHTqC-alniGDAV_KHcsztqhnVmQ0"
 ```
 
 **Important:** The `.env.local` file is listed in `.gitignore` and should never be committed to your repository for security reasons.

@@ -1,7 +1,8 @@
-import { GoogleGenAI, Content } from "@google/genai";
+import { GoogleGenAI, Content, GenerateContentResponse } from "@google/genai";
 import { EstimationFormData, EstimationResult, ChatMessage } from "../types";
 
-// FIX: Use process.env as required by the execution environment to fix runtime error.
+// FIX: Use `process.env` to access the environment variable provided by the execution environment.
+// The environment variable is expected to be named `API_KEY`.
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const estimationSystemInstruction = `
@@ -53,7 +54,7 @@ Ta mission est de fournir une première estimation immobilière enrichie, crédi
 7.  **Synthèse :** Génère une phrase de conclusion percutante qui résume le positionnement du bien, en intégrant l'impact des caractéristiques d'affinage. Exemple : "Grâce à son excellente luminosité et son grand jardin, votre bien se positionne favorablement sur le marché, bien que des travaux de rafraîchissement soient à considérer."
 8.  **Prise en compte des caractéristiques d'affinage :** Utilise IMPÉRATIVEMENT les informations détaillées suivantes pour affiner l'estimation, les points forts/faibles et la synthèse. Ces éléments ont un impact direct sur la valeur :
     -   vis_a_vis, vue_quality, luminosite, exposition, nuisances_sonores, proximite_axes, travaux_niveau, travaux_details, exterieur_qualite, vis_a_vis_jardin, stationnement_type.
-    -   Exemples d'impact : un vis-à-vis fort ou des nuisances importantes diminuent la valeur. Une vue exceptionnelle, une exposition sud ou un grand jardin qualitatif l'augmentent. L'absence de stationnement est un point faible notable. Des travaux importants diminuent significativement la valeur.
+    -   Exemples d'impact : un vis-à-vis fort ou des nuisances importantes diminuent la valeur. Une vue exceptionnelle, une exposition sud ou un grand jardin qualitatif l'augmentent. L'absence de stationnement est un point faible notable. Des travaux importants diminuent significativamente la valeur.
 
 Ne dévie JAMAIS de ces règles. La qualité et la structure de ta réponse sont primordiales.
 `;
@@ -98,9 +99,15 @@ export const getRealEstateEstimation = async (formData: EstimationFormData): Pro
     });
 
     try {
-        const text = response.text.trim();
+        // FIX: Add a check for response.text, as it can be undefined. Calling .trim() on undefined would cause a crash.
+        const text = response.text;
+        if (!text) {
+            console.error("Failed to get text from Gemini response:", response);
+            throw new Error("Réponse vide de l'API d'estimation.");
+        }
+
         // Handle potential markdown ```json ``` markers
-        const jsonText = text.replace(/^```json\s*/, '').replace(/```$/, '');
+        const jsonText = text.trim().replace(/^```json\s*/, '').replace(/```$/, '');
         const data = JSON.parse(jsonText);
         return data as EstimationResult;
     } catch (e) {
@@ -126,6 +133,7 @@ export const chatWithBot = async (history: ChatMessage[]): Promise<string> => {
     // This version passes the conversation history to maintain context.
     const geminiHistory: Content[] = history.slice(0, -1).map(msg => ({
         parts: [{ text: msg.text }],
+        // FIX: Corrected role mapping. User messages should have 'user' role, bot messages should have 'model' role.
         role: msg.sender === 'user' ? 'user' : 'model'
     }));
 
@@ -138,6 +146,8 @@ export const chatWithBot = async (history: ChatMessage[]): Promise<string> => {
     });
     
     const lastUserMessage = history[history.length - 1].text;
-    const result = await chat.sendMessage({ message: lastUserMessage });
-    return result.text;
+    const result: GenerateContentResponse = await chat.sendMessage({ message: lastUserMessage });
+    
+    // FIX: Handle the case where result.text is undefined to match the function's return type and provide a fallback response.
+    return result.text ?? "Désolé, une erreur est survenue. Veuillez réessayer.";
 };
