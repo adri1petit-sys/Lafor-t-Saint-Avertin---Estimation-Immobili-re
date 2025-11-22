@@ -1,0 +1,77 @@
+// This file provides type hints for the Google Maps API loaded from the script tag.
+// This prevents TypeScript errors when accessing `google.maps`.
+
+declare namespace google {
+  namespace maps {
+    interface MapsEventListener {
+      remove(): void;
+    }
+
+    class Map {
+      constructor(el: HTMLElement, opts?: any);
+    }
+    class Marker {
+      constructor(opts?: any);
+    }
+    class LatLng {
+      constructor(lat: number, lng: number);
+    }
+    class Circle {
+        constructor(opts?: any);
+    }
+    namespace places {
+      class Autocomplete {
+        constructor(inputElement: HTMLInputElement, opts?: AutocompleteOptions);
+        addListener(eventName: string, handler: () => void): MapsEventListener;
+        getPlace(): PlaceResult;
+      }
+      interface AutocompleteOptions {
+        componentRestrictions?: { country: string | string[] };
+        fields?: string[];
+        types?: string[];
+      }
+      
+      interface PlaceReview {
+        author_name: string;
+        rating?: number;
+        text?: string;
+        relative_time_description?: string;
+      }
+
+      interface PlaceResult {
+        formatted_address?: string;
+        geometry?: {
+          location: {
+            lat: () => number;
+            lng: () => number;
+          };
+        };
+        reviews?: PlaceReview[];
+      }
+
+      enum PlacesServiceStatus {
+        OK = "OK",
+        ZERO_RESULTS = "ZERO_RESULTS",
+        NOT_FOUND = "NOT_FOUND",
+        INVALID_REQUEST = "INVALID_REQUEST",
+        OVER_QUERY_LIMIT = "OVER_QUERY_LIMIT",
+        REQUEST_DENIED = "REQUEST_DENIED",
+        UNKNOWN_ERROR = "UNKNOWN_ERROR",
+      }
+
+      interface PlaceDetailsRequest {
+        placeId: string;
+        fields?: string[];
+        language?: string;
+      }
+      
+      class PlacesService {
+        constructor(attrContainer: HTMLElement | Map);
+        getDetails(
+          request: PlaceDetailsRequest,
+          callback: (result: PlaceResult | null, status: PlacesServiceStatus) => void
+        ): void;
+      }
+    }
+  }
+}
