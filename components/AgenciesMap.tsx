@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { loadGoogleMapsScript } from '../services/mapsLoader';
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyA60-xXW1VFg5W9IyZyN8vBwkftd-0XAcY";
+const GOOGLE_MAPS_API_KEY = process.env.VITE_GOOGLE_MAPS_API_KEY;
 const CITY_NAME = "Saint-Avertin";
 const SERVED_AREAS = ["Saint-Avertin", "Chambray-lès-Tours", "Tours-Sud", "Larçay", "Veigné", "Esvres-sur-Indre"];
 const MAP_CENTER = { lat: 47.3486, lng: 0.7208 }; // Saint-Avertin coordinates
@@ -75,7 +75,7 @@ const AgenciesMap: React.FC = () => {
                     <p>
                         La clé API Google Maps est manquante ou invalide.
                         <br />
-                        Veuillez l'ajouter dans le fichier <code>components/AgenciesMap.tsx</code>.
+                        Veuillez la ajouter dans votre fichier d'environnement.
                     </p>
                 </div>
             </div>

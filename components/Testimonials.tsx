@@ -4,7 +4,7 @@ import { loadGoogleMapsScript } from '../services/mapsLoader';
 
 // --- CONFIGURATION ---
 // IMPORTANT: Replace with your actual Google Maps API key, the same as for the map.
-const GOOGLE_MAPS_API_KEY = "AIzaSyA60-xXW1VFg5W9IyZyN8vBwkftd-0XAcY"; 
+const GOOGLE_MAPS_API_KEY = process.env.VITE_GOOGLE_MAPS_API_KEY;
 // Google Places ID for "Laforêt Saint-Avertin"
 const AGENCY_PLACE_ID = "ChIJz-lxxvnv_EcRq7p86t9s-z0";
 

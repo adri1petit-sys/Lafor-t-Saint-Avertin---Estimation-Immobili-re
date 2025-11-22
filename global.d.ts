@@ -1,3 +1,12 @@
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      API_KEY: string;
+      VITE_GOOGLE_MAPS_API_KEY: string;
+    }
+  }
+}
+
 // This file is used to provide type hints for the Google Maps API
 // loaded from the script tag. This prevents TypeScript errors when
 // accessing `google.maps`.
@@ -73,3 +82,6 @@ declare namespace google {
     }
   }
 }
+
+// FIX: Add export {} to make this file a module and fix the global augmentation error.
+export {};

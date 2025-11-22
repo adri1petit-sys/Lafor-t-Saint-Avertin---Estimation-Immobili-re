@@ -1,8 +1,8 @@
-
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Content } from "@google/genai";
 import { EstimationFormData, EstimationResult, ChatMessage } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+// FIX: Use process.env as required by the execution environment to fix runtime error.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const estimationSystemInstruction = `
 Tu es un expert immobilier d'élite pour l'agence Laforêt Saint-Avertin. Ta zone de couverture est Saint-Avertin, Chambray-lès-Tours, Tours-Sud, Larçay, Veigné, et Esvres-sur-Indre.
@@ -89,7 +89,7 @@ export const getRealEstateEstimation = async (formData: EstimationFormData): Pro
     `;
 
     const response = await ai.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-3-pro-preview',
         contents: prompt,
         config: {
             systemInstruction: estimationSystemInstruction,
@@ -122,15 +122,21 @@ Garde tes réponses concises et claires. Si tu ne connais pas la réponse, dis-l
 `;
 
 export const chatWithBot = async (history: ChatMessage[]): Promise<string> => {
+    // FIX: The previous implementation created a new chat session for every message, losing conversation context.
+    // This version passes the conversation history to maintain context.
+    const geminiHistory: Content[] = history.slice(0, -1).map(msg => ({
+        parts: [{ text: msg.text }],
+        role: msg.sender === 'user' ? 'user' : 'model'
+    }));
+
     const chat = ai.chats.create({
         model: 'gemini-2.5-flash',
         config: {
             systemInstruction: chatbotSystemInstruction
         },
+        history: geminiHistory,
     });
-
-    // We only need the last message from the user to send.
-    // In a more complex scenario, we would format the history.
+    
     const lastUserMessage = history[history.length - 1].text;
     const result = await chat.sendMessage({ message: lastUserMessage });
     return result.text;

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { loadGoogleMapsScript } from '../services/mapsLoader';
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyA60-xXW1VFg5W9IyZyN8vBwkftd-0XAcY";
+const GOOGLE_MAPS_API_KEY = process.env.VITE_GOOGLE_MAPS_API_KEY;
 const SERVED_AREAS = ["Saint-Avertin", "Chambray-lès-Tours", "Tours-Sud", "Larçay", "Veigné", "Esvres-sur-Indre"];
 
 interface GoogleAddressAutocompleteInputProps {
@@ -67,7 +67,7 @@ const GoogleAddressAutocompleteInput: React.FC<GoogleAddressAutocompleteInputPro
       />
       {apiKeyMissing ? (
         <p className="text-xs text-red-600 mt-1">
-          <strong>Erreur :</strong> La clé API Google Maps est manquante ou invalide. L'autocomplétion d'adresse est désactivée. Veuillez configurer la clé dans <code>components/GoogleAddressAutocompleteInput.tsx</code>.
+          <strong>Erreur :</strong> La clé API Google Maps est manquante ou invalide. L'autocomplétion d'adresse est désactivée. Veuillez configurer la clé dans votre fichier d'environnement.
         </p>
       ) : (
         <p className="text-xs text-gray-500 mt-1">Zone desservie : {SERVED_AREAS.join(', ')}.</p>
